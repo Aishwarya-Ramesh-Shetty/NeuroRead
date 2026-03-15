@@ -1,0 +1,34 @@
+flowchart TD
+    A[Student - Frontend React App] -->|HTTP + JWT| B[Express API Layer]
+
+    subgraph Backend[Node.js / Express Backend]
+      B --> R[Routes]
+      R --> M1[Middlewares\nAuth + Validation]
+      M1 --> C[Controllers]
+      C --> S[Services]
+      S --> D[(MongoDB via Mongoose Models)]
+      C --> U[Utils\nAPI Response + AppError]
+      M1 --> E[Error Middleware]
+      C --> E
+    end
+
+    subgraph Collections[MongoDB Collections]
+      U1[Users]
+      G1[Games]
+      Q1[Questions]
+      A1[Attempts]
+    end
+
+    D --> U1
+    D --> G1
+    D --> Q1
+    D --> A1
+
+    B --> H[/health]
+
+    A -->|Auth APIs| B
+    A -->|Games APIs| B
+    A -->|Progress APIs| B
+
+    classDef sec fill:#fdf2f8,stroke:#db2777,stroke-width:1px;
+    class M1,E sec;
