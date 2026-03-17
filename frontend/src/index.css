@@ -1,0 +1,57 @@
+/* OpenDyslexic Font */
+@font-face {
+  font-family: 'OpenDyslexic';
+  src: url('./assets/fonts/OpenDyslexic-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'OpenDyslexic';
+  src: url('./assets/fonts/OpenDyslexic-Bold.ttf') format('truetype');
+  font-weight: bold;
+}
+
+/* Existing Google Fonts (optional, can stay) */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Poppins:wght@600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    font-family: 'OpenDyslexic', sans-serif;
+    color: #1f2937;
+    background:
+      radial-gradient(circle at top, rgba(20, 184, 166, 0.12), transparent 28%),
+      linear-gradient(180deg, #f8fafc 0%, #eff6ff 100%);
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    @apply m-0 min-h-screen bg-transparent text-ink;
+    font-family: 'OpenDyslexic', sans-serif;
+    letter-spacing: 0.05em;
+    line-height: 1.6;
+  }
+
+  #root {
+    @apply min-h-screen;
+  }
+
+  a {
+    @apply text-inherit no-underline;
+  }
+}
+
+@layer components {
+  .panel {
+    @apply rounded-3xl border border-white/60 bg-white/80 shadow-lg shadow-slate-200/60 backdrop-blur;
+  }
+}
