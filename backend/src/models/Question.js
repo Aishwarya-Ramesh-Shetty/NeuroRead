@@ -8,6 +8,11 @@ const questionSchema = new mongoose.Schema(
       required: true,
       index: true
     },
+    questionType: {
+      type: String,
+      trim: true,
+      default: 'standard'
+    },
     questionText: {
       type: String,
       required: true,
@@ -20,22 +25,25 @@ const questionSchema = new mongoose.Schema(
       trim: true
     },
     options: {
-      type: [String],
-      required: true,
-      validate: {
-        validator: (arr) => Array.isArray(arr) && arr.length >= 2,
-        message: 'At least two options are required'
-      }
+      type: [mongoose.Schema.Types.Mixed],
+      default: []
     },
     correctAnswer: {
-      type: String,
-      required: true,
-      trim: true
+      type: mongoose.Schema.Types.Mixed,
+      required: true
+    },
+    acceptedAnswers: {
+      type: [String],
+      default: []
     },
     audioUrl: {
       type: String,
       default: null,
       trim: true
+    },
+    payload: {
+      type: mongoose.Schema.Types.Mixed,
+      default: null
     }
   },
   {
@@ -44,6 +52,7 @@ const questionSchema = new mongoose.Schema(
 );
 
 questionSchema.index({ gameId: 1, createdAt: -1 });
+questionSchema.index({ gameId: 1, questionType: 1 });
 
 const Question = mongoose.model('Question', questionSchema);
 
