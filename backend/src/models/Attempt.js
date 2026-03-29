@@ -24,6 +24,17 @@ const attemptSchema = new mongoose.Schema(
       type: Number,
       required: true,
       min: 1
+    },
+    isCompleted: {
+      type: Boolean,
+      default: false,
+      index: true
+    },
+    accuracy: {
+      type: Number,
+      min: 0,
+      max: 100,
+      default: null
     }
   },
   {
@@ -32,6 +43,7 @@ const attemptSchema = new mongoose.Schema(
 );
 
 attemptSchema.index({ userId: 1, gameId: 1, createdAt: -1 });
+attemptSchema.index({ userId: 1, isCompleted: 1 });
 
 const Attempt = mongoose.model('Attempt', attemptSchema);
 
