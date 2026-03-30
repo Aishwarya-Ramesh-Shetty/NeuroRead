@@ -1,0 +1,7 @@
+reading_speed,spelling_errors,prefix_errors,suffix_errors,level
+8,1,1,0,Advanced
+6,2,1,1,Intermediate
+5,3,2,1,Intermediate
+4,4,3,2,Beginner
+3,6,4,3,Beginner
+7,1,1,0,Advanced
