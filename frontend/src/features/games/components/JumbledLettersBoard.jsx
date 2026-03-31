@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import LetterPronounceText from './LetterPronounceText.jsx';
 
 function JumbledLettersBoard({
   letters = [],
@@ -95,7 +96,7 @@ function JumbledLettersBoard({
                   }}
                   type="button"
                 >
-                  {tile.label}
+                  <LetterPronounceText stopPropagation={false} text={tile.label} />
                 </button>
               </div>
             ))
@@ -133,7 +134,7 @@ function JumbledLettersBoard({
               }}
               type="button"
             >
-              {tile.label}
+              <LetterPronounceText stopPropagation={false} text={tile.label} />
             </button>
           ))}
         </div>

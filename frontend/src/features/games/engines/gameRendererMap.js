@@ -6,8 +6,12 @@ import PronunciationSelectionGame from '../game-types/PronunciationSelectionGame
 
 export const gameRendererMap = {
   picture_mcq: PictureMcqGame,
+  letter_recognition: PictureMcqGame,
   match_column: MatchColumnGame,
+  alphabet_matching: MatchColumnGame,
   pronunciation_selection: PronunciationSelectionGame,
+  sound_identification: PronunciationSelectionGame,
   jumbled_letters: JumbledLettersGame,
+  word_builder: JumbledLettersGame,
   letter_pronunciation: LetterPronunciationGame
 };

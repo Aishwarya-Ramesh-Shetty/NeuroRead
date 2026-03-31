@@ -24,7 +24,8 @@ function GameDashboardPage() {
         const gamesResponse = await fetchGames();
 
         if (isMounted) {
-          setGames(gamesResponse);
+          const randomizedGames = [...gamesResponse].sort(() => Math.random() - 0.5);
+          setGames(randomizedGames);
         }
       } catch (error) {
         if (isMounted) {

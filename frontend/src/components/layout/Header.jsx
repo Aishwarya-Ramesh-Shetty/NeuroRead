@@ -4,6 +4,7 @@ import { useAuth } from '../../features/auth/hooks/useAuth.js';
 
 const navItems = [
   { to: '/dashboard', label: 'Dashboard' },
+  { to: '/personalized-learning', label: 'Personalized Learning' },
   { to: '/progress', label: 'Progress' }
 ];
 

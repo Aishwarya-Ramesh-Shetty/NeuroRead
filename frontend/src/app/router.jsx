@@ -7,6 +7,7 @@ import DashboardPage from '../pages/DashboardPage.jsx';
 import GamePage from '../pages/GamePage.jsx';
 import LoginPage from '../pages/LoginPage.jsx';
 import ProgressPage from '../pages/ProgressPage.jsx';
+import PersonalizedLearningPage from '../pages/PersonalizedLearningPage.jsx';
 import ResultPage from '../pages/ResultPage.jsx';
 import SignupPage from '../pages/SignupPage.jsx';
 
@@ -33,6 +34,7 @@ function AppRouter() {
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/game/:gameId" element={<GamePage />} />
         <Route path="/game/:gameId/result" element={<ResultPage />} />
+        <Route path="/personalized-learning" element={<PersonalizedLearningPage />} />
         <Route path="/progress" element={<ProgressPage />} />
       </Route>
       <Route
