@@ -6,7 +6,17 @@ export async function fetchGames() {
   return response.data.data.games.map((game) => mapEntityId(game));
 }
 
-export async function fetchGameQuestions(gameId) {
-  const response = await apiClient.get(`/games/${gameId}/questions`);
+export async function fetchPersonalizedGames() {
+  const response = await apiClient.get('/games/personalized');
+
+  return {
+    currentLevel: response.data.data.currentLevel,
+    games: response.data.data.games.map((game) => mapEntityId(game))
+  };
+}
+
+export async function fetchGameQuestions(gameId, personalized = false) {
+  const suffix = personalized ? 'personalized-questions' : 'questions';
+  const response = await apiClient.get(`/games/${gameId}/${suffix}`);
   return response.data.data.questions.map((question) => mapEntityId(question));
 }

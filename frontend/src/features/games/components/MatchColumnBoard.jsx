@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import LetterPronounceText from './LetterPronounceText.jsx';
 
 function MatchColumnBoard({
   leftItems = [],
@@ -105,7 +106,7 @@ function MatchColumnBoard({
                     {index + 1}
                   </span>
                   <div className="min-w-0 flex-1">
-                    <p className="text-xl font-black text-ink">{item.label}</p>
+                    <p className="text-xl font-black text-ink"><LetterPronounceText text={item.label} /></p>
                     <p className="text-sm font-bold text-slate-500">
                       {connectedRight ? `Matched with ${connectedRight.label}` : 'Drag to match'}
                     </p>
@@ -157,7 +158,7 @@ function MatchColumnBoard({
                   {String.fromCharCode(65 + index)}
                 </span>
                 <div className="min-w-0">
-                  <p className="text-xl font-black text-ink">{item.label}</p>
+                  <p className="text-xl font-black text-ink"><LetterPronounceText text={item.label} /></p>
                   <p className="text-sm font-bold text-slate-500">
                     {matchingLeft ? `Dropped: ${matchingLeft.label}` : 'Drop a left card here'}
                   </p>

@@ -9,19 +9,31 @@ function rotateArray(items) {
 export function normalizeQuestionByGameType(gameType, question) {
   const options = Array.isArray(question.options) ? question.options : [];
 
-  if (gameType === 'picture_mcq') {
+  if (gameType === 'picture_mcq' || gameType === 'letter_recognition') {
     return {
       ...question,
       options
     };
   }
 
-  if (gameType === 'match_column') {
-    const leftItems = options.map((option, index) => ({
+  if (gameType === 'match_column' || gameType === 'alphabet_matching') {
+    const normalizedOptions = options.map((option) => {
+      if (typeof option === 'string') {
+        return option;
+      }
+
+      if (option?.left && option?.right) {
+        return `${option.left} - ${option.right}`;
+      }
+
+      return String(option);
+    });
+
+    const leftItems = normalizedOptions.map((option, index) => ({
       id: `left-${index}`,
       label: option
     }));
-    const rightItems = rotateArray(options).map((option, index) => ({
+    const rightItems = rotateArray(normalizedOptions).map((option, index) => ({
       id: `right-${index}`,
       label: option
     }));
@@ -39,14 +51,14 @@ export function normalizeQuestionByGameType(gameType, question) {
     };
   }
 
-  if (gameType === 'pronunciation_selection') {
+  if (gameType === 'pronunciation_selection' || gameType === 'sound_identification') {
     return {
       ...question,
       options
     };
   }
 
-  if (gameType === 'jumbled_letters') {
+  if (gameType === 'jumbled_letters' || gameType === 'word_builder') {
     return {
       ...question,
       shuffledLetters: options.length ? options : String(question.correctAnswer || '').split('')
@@ -77,13 +89,13 @@ export function isAnswerComplete(gameType, question, answerPayload) {
     return false;
   }
 
-  if (gameType === 'match_column') {
+  if (gameType === 'match_column' || gameType === 'alphabet_matching') {
     return (
       Object.keys(answerPayload.selectedAnswer ?? {}).length === (question.leftItems?.length ?? 0)
     );
   }
 
-  if (gameType === 'jumbled_letters') {
+  if (gameType === 'jumbled_letters' || gameType === 'word_builder') {
     return (
       (answerPayload.selectedAnswer?.length ?? 0) ===
       (question.shuffledLetters?.length ?? question.correctAnswer?.length ?? 0)
