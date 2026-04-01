@@ -16,8 +16,5 @@ export const gameRendererMap = {
   sound_identification: PronunciationSelectionGame,
   jumbled_letters: JumbledLettersGame,
   word_builder: JumbledLettersGame,
-  letter_pronunciation: LetterPronunciationGame,
-  sentence_formation: SentenceFormationGame,
-  fill_in_the_blanks: FillInTheBlanksGame,
-  spelling_correction: SpellingCorrectionGame
+  letter_pronunciation: LetterPronunciationGame
 };

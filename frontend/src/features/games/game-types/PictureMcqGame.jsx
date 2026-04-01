@@ -4,6 +4,7 @@ import LetterPronounceText from '../components/LetterPronounceText.jsx';
 import OptionButton from '../components/OptionButton.jsx';
 import QuestionCard from '../components/QuestionCard.jsx';
 import ScoreCard from '../components/ScoreCard.jsx';
+import LetterPronounceText from '../components/LetterPronounceText.jsx';
 
 const defaultQuestion = {
   questionText: 'Which word matches the picture?',
@@ -92,7 +93,7 @@ function PictureMcqGame({
         <div className="grid gap-4 sm:grid-cols-2">
           {question.options.map((option) => (
             <OptionButton
-              key={option}
+              key=<LetterPronounceText text={option} />
               disabled={disabled}
               isCorrect={isAnswered && option === question.correctAnswer}
               isSelected={activeAnswer === option}

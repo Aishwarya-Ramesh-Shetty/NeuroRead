@@ -52,23 +52,5 @@ export const gameTypeMeta = {
     accent: 'from-orange-400 via-amber-400 to-yellow-400',
     difficulty: 'Easy',
     difficultyTone: 'bg-amber-100 text-amber-700'
-  },
-sentence_formation: {
-    label: 'Sentence Formation',
-    accent: 'from-purple-500 via-violet-500 to-indigo-500',
-    difficulty: 'Advanced',
-    difficultyTone: 'bg-violet-100 text-violet-700'
-  },
-  fill_in_the_blanks: {
-    label: 'Fill in the Blanks',
-    accent: 'from-teal-500 via-cyan-500 to-sky-500',
-    difficulty: 'Advanced',
-    difficultyTone: 'bg-cyan-100 text-cyan-700'
-  },
-  spelling_correction: {
-    label: 'Spelling Correction',
-    accent: 'from-rose-500 via-red-500 to-orange-500',
-    difficulty: 'Advanced',
-    difficultyTone: 'bg-rose-100 text-rose-700'
-  },
+  }
 };

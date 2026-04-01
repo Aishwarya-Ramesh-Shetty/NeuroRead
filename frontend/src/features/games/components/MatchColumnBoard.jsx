@@ -106,9 +106,7 @@ function MatchColumnBoard({
                     {index + 1}
                   </span>
                   <div className="min-w-0 flex-1">
-                    <p className="text-xl font-black text-ink">
-                      <LetterPronounceText text={item.label} />
-                    </p>
+                    <p className="text-xl font-black text-ink"><LetterPronounceText text={item.label} /></p>
                     <p className="text-sm font-bold text-slate-500">
                       {connectedRight ? 'Matched' : 'Drag to match'}
                     </p>
@@ -160,11 +158,8 @@ function MatchColumnBoard({
                 <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-sky-500 text-lg font-black text-white">
                   {String.fromCharCode(65 + index)}
                 </span>
-                <div className="min-w-0 flex-1">
-                  {item.imageUrl ? (
-                    <img alt={item.label || 'Match option'} className="mb-2 h-20 w-full rounded-xl object-cover" src={item.imageUrl} />
-                  ) : null}
-                  <p className="text-xl font-black text-ink">{item.label || 'Image option'}</p>
+                <div className="min-w-0">
+                  <p className="text-xl font-black text-ink"><LetterPronounceText text={item.label} /></p>
                   <p className="text-sm font-bold text-slate-500">
                     {matchingLeft ? `Dropped: ${matchingLeft.label}` : 'Drop a left card here'}
                   </p>
