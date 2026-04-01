@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import AudioPlayer from '../components/AudioPlayer.jsx';
+import LetterPronounceText from '../components/LetterPronounceText.jsx';
 import OptionButton from '../components/OptionButton.jsx';
 import QuestionCard from '../components/QuestionCard.jsx';
 import ScoreCard from '../components/ScoreCard.jsx';
@@ -32,7 +33,7 @@ function PictureMcqGame({
     if (!isAnswered) {
       return {
         title: 'Pick the correct word',
-        subtitle: 'Look at the picture carefully and tap one answer.',
+        subtitle: 'Look at the prompt and tap one answer.',
         score: '?',
         accentClassName: 'from-sky-500 via-cyan-500 to-teal-400'
       };
@@ -41,7 +42,7 @@ function PictureMcqGame({
     if (isCorrect) {
       return {
         title: 'Correct answer',
-        subtitle: 'Great job. You matched the picture with the right word.',
+        subtitle: 'Great job. You matched the right answer.',
         score: 10,
         accentClassName: 'from-emerald-500 via-lime-500 to-amber-400'
       };
@@ -49,7 +50,7 @@ function PictureMcqGame({
 
     return {
       title: 'Try again',
-      subtitle: `The correct word is "${question.correctAnswer}".`,
+      subtitle: `The correct answer is "${question.correctAnswer}".`,
       score: 0,
       accentClassName: 'from-rose-500 via-orange-500 to-amber-400'
     };
@@ -75,16 +76,16 @@ function PictureMcqGame({
   return (
     <div className="grid gap-6 xl:grid-cols-[minmax(0,1.6fr)_minmax(18rem,0.9fr)]">
       <QuestionCard
-        title={`Picture Question ${questionNumber}/${totalQuestions}`}
+        title={`Question ${questionNumber}/${totalQuestions}`}
         prompt={question.questionText}
-        helperText="Tap the word that best matches the picture."
+        helperText="Click a letter in any word to hear its pronunciation."
         imageUrl={question.imageUrl}
         audio={
           question.audioUrl ? (
             <AudioPlayer
-              description="Listen to the clue before answering."
+              description="Play the full prompt sound before answering."
               src={question.audioUrl}
-              title="Need an audio hint?"
+              title="Play Word Sound"
             />
           ) : null
         }
@@ -112,19 +113,11 @@ function PictureMcqGame({
           stats={[
             { label: 'Question', value: `${questionNumber}/${totalQuestions}` },
             { label: 'Choices', value: String(question.options.length) },
-            { label: 'Mode', value: 'Picture MCQ' }
+            { label: 'Mode', value: 'Picture / Letter MCQ' }
           ]}
           subtitle={status.subtitle}
           title={status.title}
         />
-        <div className="rounded-[2rem] bg-gradient-to-br from-fuchsia-100 via-white to-sky-100 p-5 shadow-lg">
-          <p className="text-sm font-black uppercase tracking-[0.24em] text-fuchsia-600">
-            Learning tip
-          </p>
-          <p className="mt-3 text-xl font-black leading-9 text-ink">
-            Say the word out loud after you choose it. Hearing and reading together helps memory.
-          </p>
-        </div>
       </div>
     </div>
   );

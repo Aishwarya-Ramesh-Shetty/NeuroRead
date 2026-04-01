@@ -1,18 +1,22 @@
 function rotateArray(items) {
-  if (items.length <= 1) {
-    return items;
-  }
-
+  if (items.length <= 1) return items;
   return [...items.slice(1), items[0]];
+}
+
+function normalizeText(value) {
+  return String(value ?? '').trim();
 }
 
 export function normalizeQuestionByGameType(gameType, question) {
   const options = Array.isArray(question.options) ? question.options : [];
+  const payload = question.payload && typeof question.payload === 'object' ? question.payload : {};
 
   if (gameType === 'picture_mcq' || gameType === 'letter_recognition') {
     return {
       ...question,
-      options
+      imageUrl: question.imageUrl || payload.imageUrl || null,
+      audioUrl: question.audioUrl || payload.audioUrl || null,
+      options: options.map((item) => (typeof item === 'string' ? item : item?.label || String(item)))
     };
   }
 
@@ -35,41 +39,61 @@ export function normalizeQuestionByGameType(gameType, question) {
     }));
     const rightItems = rotateArray(normalizedOptions).map((option, index) => ({
       id: `right-${index}`,
-      label: option
+      label: normalizeText(pair.word),
+      imageUrl: pair.imageUrl || question.imageUrl || null
     }));
-    const correctMatches = leftItems.reduce((accumulator, item) => {
-      const matchingRight = rightItems.find((rightItem) => rightItem.label === item.label);
-      accumulator[item.id] = matchingRight?.id;
-      return accumulator;
+    const correctMatches = leftItems.reduce((acc, item) => {
+      const match = rightItems.find((right) => right.label.toLowerCase() === item.label.toLowerCase());
+      acc[item.id] = match?.id;
+      return acc;
     }, {});
 
+    return { ...question, leftItems, rightItems, correctMatches };
+  }
+
+  if (gameType === 'pronunciation_selection' || gameType === 'sound_identification') {
     return {
       ...question,
-      leftItems,
-      rightItems,
-      correctMatches
+      audioUrl: question.audioUrl || payload.audioUrl || null,
+      options: options.map((item) => (typeof item === 'string' ? item : item?.label || String(item)))
     };
   }
 
   if (gameType === 'pronunciation_selection' || gameType === 'sound_identification') {
     return {
       ...question,
-      options
+      imageUrl: question.imageUrl || payload.imageUrl || null,
+      audioUrl: question.audioUrl || payload.audioUrl || null,
+      shuffledLetters: options.length ? options.map((x) => normalizeText(x)) : correct.split('')
     };
   }
 
   if (gameType === 'jumbled_letters' || gameType === 'word_builder') {
     return {
       ...question,
-      shuffledLetters: options.length ? options : String(question.correctAnswer || '').split('')
+      words: options.map((x) => normalizeText(x)).filter(Boolean)
+    };
+  }
+
+  if (gameType === 'fill_in_the_blanks') {
+    return {
+      ...question,
+      options: options.map((x) => normalizeText(x)).filter(Boolean)
+    };
+  }
+
+  if (gameType === 'spelling_correction') {
+    return {
+      ...question,
+      incorrectWord: normalizeText(question.questionText.split(':').pop())
     };
   }
 
   if (gameType === 'letter_pronunciation') {
     const soundOptions = options.map((option, index) => ({
       id: `sound-${index}`,
-      label: option,
-      spokenText: option
+      label: normalizeText(option),
+      spokenText: normalizeText(option)
     }));
     const correctOption = soundOptions.find((option) => option.label === question.correctAnswer);
 
@@ -85,8 +109,10 @@ export function normalizeQuestionByGameType(gameType, question) {
 }
 
 export function isAnswerComplete(gameType, question, answerPayload) {
-  if (!answerPayload) {
-    return false;
+  if (!answerPayload) return false;
+
+  if (gameType === 'match_column' || gameType === 'alphabet_matching') {
+    return Object.keys(answerPayload.selectedAnswer ?? {}).length === (question.leftItems?.length ?? 0);
   }
 
   if (gameType === 'match_column' || gameType === 'alphabet_matching') {
