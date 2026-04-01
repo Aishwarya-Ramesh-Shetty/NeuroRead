@@ -1,9 +1,9 @@
-import { useRef, useState } from 'react';
-import { fetchPronunciationByLetter } from '../api/pronunciationApi.js';
+import { useState } from 'react';
+import { usePronunciation } from '../hooks/usePronunciation.js';
 
 function LetterPronounceText({ text, className = '', stopPropagation = true }) {
   const [loadingLetter, setLoadingLetter] = useState('');
-  const audioRef = useRef(null);
+  const { playLetter } = usePronunciation();
 
   const handleLetterClick = async (event, letter) => {
     if (stopPropagation) {
@@ -16,17 +16,9 @@ function LetterPronounceText({ text, className = '', stopPropagation = true }) {
 
     try {
       setLoadingLetter(letter);
-      const result = await fetchPronunciationByLetter(letter.toUpperCase());
-
-      if (audioRef.current) {
-        audioRef.current.pause();
-      }
-
-      const audio = new Audio(result.audioUrl);
-      audioRef.current = audio;
-      await audio.play();
+      await playLetter(letter);
     } catch {
-      // Silent fallback: selection/game play should still work if pronunciation audio fails.
+      // Ignore pronunciation failures and keep game interaction responsive.
     } finally {
       setLoadingLetter('');
     }

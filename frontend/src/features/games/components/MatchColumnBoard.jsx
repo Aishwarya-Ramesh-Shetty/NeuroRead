@@ -159,7 +159,15 @@ function MatchColumnBoard({
                   {String.fromCharCode(65 + index)}
                 </span>
                 <div className="min-w-0">
-                  <p className="text-xl font-black text-ink"><LetterPronounceText text={item.label} /></p>
+                  {item.imageUrl ? (
+                    <img
+                      alt={item.label || 'Match option'}
+                      className="h-16 w-16 rounded-xl object-cover"
+                      src={item.imageUrl}
+                    />
+                  ) : (
+                    <p className="text-xl font-black text-ink"><LetterPronounceText text={item.label} /></p>
+                  )}
                   <p className="text-sm font-bold text-slate-500">
                     {matchingLeft ? `Dropped: ${matchingLeft.label}` : 'Drop a left card here'}
                   </p>

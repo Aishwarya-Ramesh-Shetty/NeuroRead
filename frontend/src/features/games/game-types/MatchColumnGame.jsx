@@ -98,7 +98,7 @@ function MatchColumnGame({
       <QuestionCard
         title={`Match Question ${questionNumber}/${totalQuestions}`}
         prompt={question.questionText}
-        helperText="Drag cards from the left column onto the matching choices on the right."
+        helperText="Match left words with the right targets. Click letters to hear pronunciation."
       >
         <MatchColumnBoard
           leftItems={question.leftItems}

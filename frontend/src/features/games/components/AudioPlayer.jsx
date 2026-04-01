@@ -10,40 +10,35 @@ function AudioPlayer({
   const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
-    const audioElement = audioRef.current;
-
-    if (!audioElement) {
-      return undefined;
-    }
-
-    const handleEnded = () => setIsPlaying(false);
-    const handlePause = () => setIsPlaying(false);
-    const handlePlay = () => setIsPlaying(true);
-
-    audioElement.addEventListener('ended', handleEnded);
-    audioElement.addEventListener('pause', handlePause);
-    audioElement.addEventListener('play', handlePlay);
-
     return () => {
-      audioElement.removeEventListener('ended', handleEnded);
-      audioElement.removeEventListener('pause', handlePause);
-      audioElement.removeEventListener('play', handlePlay);
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
     };
   }, []);
 
   const toggleAudio = async () => {
-    const audioElement = audioRef.current;
-
-    if (!audioElement) {
+    if (!src) {
       return;
     }
 
-    if (isPlaying) {
-      audioElement.pause();
+    if (isPlaying && audioRef.current) {
+      audioRef.current.pause();
+      setIsPlaying(false);
       return;
     }
 
-    await audioElement.play();
+    if (audioRef.current) {
+      audioRef.current.pause();
+    }
+
+    const audio = new Audio(src);
+    audioRef.current = audio;
+    audio.onended = () => setIsPlaying(false);
+    audio.onpause = () => setIsPlaying(false);
+    setIsPlaying(true);
+    await audio.play();
   };
 
   return (
@@ -61,7 +56,6 @@ function AudioPlayer({
         >
           {isPlaying ? 'Pause Audio' : 'Play Audio'}
         </button>
-        <audio ref={audioRef} src={src} />
       </div>
     </div>
   );
