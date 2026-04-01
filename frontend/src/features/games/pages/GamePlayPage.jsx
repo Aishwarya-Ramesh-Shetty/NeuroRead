@@ -190,8 +190,8 @@ function GamePlayPage() {
   if (!Renderer) {
     return (
       <EmptyState
-        title="Unsupported game type"
-        description="This game type is not yet connected to a frontend renderer."
+        title="Game unavailable"
+        description="This game could not be rendered for this question set."
       />
     );
   }

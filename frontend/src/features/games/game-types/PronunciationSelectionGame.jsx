@@ -75,7 +75,7 @@ function PronunciationSelectionGame({
       <QuestionCard
         title={`Pronunciation Question ${questionNumber}/${totalQuestions}`}
         prompt={question.questionText}
-        helperText="Use the audio clue and choose the best matching word."
+        helperText="Use the audio clue and choose the best matching word. Click any letter to hear pronunciation."
         audio={
           <AudioPlayer
             accentClassName="from-indigo-500 via-violet-500 to-sky-500"
@@ -88,7 +88,7 @@ function PronunciationSelectionGame({
         <div className="grid gap-4 sm:grid-cols-2">
           {question.options.map((option) => (
             <OptionButton
-              key=<LetterPronounceText text={option} />
+              key={option}
               disabled={disabled}
               isCorrect={isAnswered && option === question.correctAnswer}
               isSelected={activeAnswer === option}

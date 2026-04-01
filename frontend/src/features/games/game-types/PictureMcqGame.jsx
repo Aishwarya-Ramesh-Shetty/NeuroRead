@@ -4,7 +4,6 @@ import LetterPronounceText from '../components/LetterPronounceText.jsx';
 import OptionButton from '../components/OptionButton.jsx';
 import QuestionCard from '../components/QuestionCard.jsx';
 import ScoreCard from '../components/ScoreCard.jsx';
-import LetterPronounceText from '../components/LetterPronounceText.jsx';
 
 const defaultQuestion = {
   questionText: 'Which word matches the picture?',
@@ -79,7 +78,7 @@ function PictureMcqGame({
         title={`Question ${questionNumber}/${totalQuestions}`}
         prompt={question.questionText}
         helperText="Click a letter in any word to hear its pronunciation."
-        imageUrl={question.imageUrl}
+        imageUrl={question.imageUrl || undefined}
         audio={
           question.audioUrl ? (
             <AudioPlayer
@@ -93,7 +92,7 @@ function PictureMcqGame({
         <div className="grid gap-4 sm:grid-cols-2">
           {question.options.map((option) => (
             <OptionButton
-              key=<LetterPronounceText text={option} />
+              key={option}
               disabled={disabled}
               isCorrect={isAnswered && option === question.correctAnswer}
               isSelected={activeAnswer === option}
