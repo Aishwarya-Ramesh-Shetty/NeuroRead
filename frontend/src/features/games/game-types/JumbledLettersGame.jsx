@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import AudioPlayer from '../components/AudioPlayer.jsx';
 import JumbledLettersBoard from '../components/JumbledLettersBoard.jsx';
 import QuestionCard from '../components/QuestionCard.jsx';
 import ScoreCard from '../components/ScoreCard.jsx';
@@ -8,7 +9,8 @@ const defaultQuestion = {
   imageUrl:
     'https://images.unsplash.com/photo-1522926193341-e9ffd686c60f?auto=format&fit=crop&w=900&q=80',
   correctAnswer: 'BIRD',
-  shuffledLetters: ['R', 'D', 'B', 'I']
+  shuffledLetters: ['R', 'D', 'B', 'I'],
+  audioUrl: ''
 };
 
 function JumbledLettersGame({
@@ -82,7 +84,7 @@ function JumbledLettersGame({
     if (isComplete) {
       return {
         title: 'Rearrange the letters',
-        subtitle: `You made "${selectedWord}". Try dragging the letters into a different order.`,
+        subtitle: `You made "${selectedWord}". Try dragging letters into a different order.`,
         score: 0,
         accentClassName: 'from-rose-500 via-orange-500 to-amber-400'
       };
@@ -101,11 +103,20 @@ function JumbledLettersGame({
       <QuestionCard
         title={`Jumbled Letters ${questionNumber}/${totalQuestions}`}
         prompt={question.questionText}
-        helperText="Drag letters from the tray into the answer row. Drag again to reorder them."
+        helperText="Drag letters to build the word. Click each letter to hear pronunciation."
         imageUrl={question.imageUrl}
+        audio={
+          question.audioUrl ? (
+            <AudioPlayer
+              description="Play full word pronunciation before building."
+              src={question.audioUrl}
+              title="Play Word Sound"
+            />
+          ) : null
+        }
       >
         <JumbledLettersBoard
-          hint="Build the word by dragging letters into place. Click a placed letter to send it back."
+          hint="Build the word by dragging letters into place."
           letters={letters}
           onChange={updateWord}
           title="Drag the letters into the correct order"
@@ -125,15 +136,6 @@ function JumbledLettersGame({
           subtitle={status.subtitle}
           title={status.title}
         />
-        <div className="rounded-[2rem] bg-gradient-to-br from-yellow-100 via-white to-lime-100 p-5 shadow-lg">
-          <p className="text-sm font-black uppercase tracking-[0.24em] text-yellow-600">
-            Strategy tip
-          </p>
-          <p className="mt-3 text-xl font-black leading-9 text-ink">
-            Look for the first sound in the word, then drag that letter into the first spot before
-            building the rest.
-          </p>
-        </div>
       </div>
     </div>
   );

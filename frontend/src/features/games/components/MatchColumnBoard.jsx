@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import LetterPronounceText from './LetterPronounceText.jsx';
 
 function MatchColumnBoard({
   leftItems = [],
@@ -70,7 +71,7 @@ function MatchColumnBoard({
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
         <h3 className="text-2xl font-black text-ink">{title}</h3>
         <p className="rounded-full bg-white/85 px-4 py-2 text-sm font-bold text-slate-600">
-          Drag left cards onto the right column
+          Left: word, Right: image/symbol
         </p>
       </div>
       <div className="grid gap-4 lg:grid-cols-2">
@@ -89,12 +90,12 @@ function MatchColumnBoard({
                     : 'border-white/90 bg-white hover:border-fuchsia-200'
                 ].join(' ')}
                 draggable
+                onDragEnd={() => setDraggingLeftId(null)}
                 onDragStart={(event) => {
                   event.dataTransfer.setData('text/plain', item.id);
                   event.dataTransfer.effectAllowed = 'move';
                   setDraggingLeftId(item.id);
                 }}
-                onDragEnd={() => setDraggingLeftId(null)}
               >
                 <button
                   className="flex w-full items-center gap-4 text-left"
@@ -105,9 +106,11 @@ function MatchColumnBoard({
                     {index + 1}
                   </span>
                   <div className="min-w-0 flex-1">
-                    <p className="text-xl font-black text-ink">{item.label}</p>
+                    <p className="text-xl font-black text-ink">
+                      <LetterPronounceText text={item.label} />
+                    </p>
                     <p className="text-sm font-bold text-slate-500">
-                      {connectedRight ? `Matched with ${connectedRight.label}` : 'Drag to match'}
+                      {connectedRight ? 'Matched' : 'Drag to match'}
                     </p>
                   </div>
                 </button>
@@ -124,6 +127,7 @@ function MatchColumnBoard({
             );
           })}
         </div>
+
         <div className="space-y-3">
           {rightItems.map((item, index) => {
             const isLinked = linkedRightIds.has(item.id);
@@ -156,8 +160,11 @@ function MatchColumnBoard({
                 <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-sky-500 text-lg font-black text-white">
                   {String.fromCharCode(65 + index)}
                 </span>
-                <div className="min-w-0">
-                  <p className="text-xl font-black text-ink">{item.label}</p>
+                <div className="min-w-0 flex-1">
+                  {item.imageUrl ? (
+                    <img alt={item.label || 'Match option'} className="mb-2 h-20 w-full rounded-xl object-cover" src={item.imageUrl} />
+                  ) : null}
+                  <p className="text-xl font-black text-ink">{item.label || 'Image option'}</p>
                   <p className="text-sm font-bold text-slate-500">
                     {matchingLeft ? `Dropped: ${matchingLeft.label}` : 'Drop a left card here'}
                   </p>

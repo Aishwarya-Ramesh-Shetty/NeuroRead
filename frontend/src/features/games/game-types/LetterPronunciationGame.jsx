@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import QuestionCard from '../components/QuestionCard.jsx';
 import ScoreCard from '../components/ScoreCard.jsx';
+import LetterPronounceText from '../components/LetterPronounceText.jsx';
 
 const defaultQuestion = {
   questionText: 'Look at the letter and choose the sound that matches it.',
@@ -107,7 +108,7 @@ function LetterPronunciationGame({
           <p className="text-sm font-black uppercase tracking-[0.28em] text-white/80">
             Letter Card
           </p>
-          <div className="mt-4 text-8xl font-black leading-none sm:text-9xl">{question.letter}</div>
+          <div className="mt-4 text-8xl font-black leading-none sm:text-9xl"><LetterPronounceText text={question.letter} /></div>
           <p className="mt-4 text-lg font-bold text-white/90">
             Choose the pronunciation that sounds right for this letter.
           </p>
@@ -130,7 +131,7 @@ function LetterPronunciationGame({
             >
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <p className="text-2xl font-black">{option.label}</p>
+                  <p className="text-2xl font-black"><LetterPronounceText text={option.label} /></p>
                   <p className="mt-1 text-base font-bold text-slate-500">
                     Listen first, then tap anywhere on this card to choose it.
                   </p>

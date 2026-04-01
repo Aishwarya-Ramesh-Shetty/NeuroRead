@@ -19,6 +19,7 @@ function GamePlayPage() {
   const location = useLocation();
   const navigate = useNavigate();
   const startedAtRef = useRef(Date.now());
+  const isPersonalizedFlow = Boolean(location.state?.personalized);
   const soundEffects = useSoundEffects();
 
   const [game, setGame] = useState(location.state?.game ?? null);
@@ -41,7 +42,7 @@ function GamePlayPage() {
       try {
         const [gamesResponse, questionsResponse] = await Promise.all([
           fetchGames(),
-          fetchGameQuestions(gameId)
+          fetchGameQuestions(gameId, isPersonalizedFlow)
         ]);
 
         const activeGame =
@@ -78,7 +79,7 @@ function GamePlayPage() {
     return () => {
       isMounted = false;
     };
-  }, [gameId, location.state?.game?.id]);
+  }, [gameId, isPersonalizedFlow, location.state?.game?.id]);
 
   const currentQuestion = questions[currentIndex] ?? null;
   const currentAnswer = answers[currentIndex] ?? null;
@@ -119,10 +120,14 @@ function GamePlayPage() {
     const timeTaken = Math.max(1, Math.round((Date.now() - startedAtRef.current) / 1000));
 
     try {
+      const accuracy = questions.length ? Number(((correctAnswers / questions.length) * 100).toFixed(2)) : 0;
+
       const attempt = await createAttempt({
         gameId: game.id,
         score,
-        timeTaken
+        timeTaken,
+        accuracy,
+        isCompleted: true
       });
 
       const result = {
