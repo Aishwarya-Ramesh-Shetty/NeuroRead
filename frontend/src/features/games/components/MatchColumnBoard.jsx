@@ -1,3 +1,4 @@
+
 import { useMemo, useState } from 'react';
 import LetterPronounceText from './LetterPronounceText.jsx';
 
@@ -13,13 +14,21 @@ function MatchColumnBoard({
   const [draggingLeftId, setDraggingLeftId] = useState(null);
   const links = value ?? draftLinks;
 
+  // ✅ FIX: convert right side to lowercase
+  const transformedRightItems = useMemo(() => {
+    return rightItems.map(item => ({
+      ...item,
+      label: item.label.toLowerCase()
+    }));
+  }, [rightItems]);
+
   const rightById = useMemo(
     () =>
-      rightItems.reduce((accumulator, item) => {
-        accumulator[item.id] = item;
-        return accumulator;
+      transformedRightItems.reduce((acc, item) => {
+        acc[item.id] = item;
+        return acc;
       }, {}),
-    [rightItems]
+    [transformedRightItems]
   );
 
   const linkedRightIds = useMemo(() => new Set(Object.values(links)), [links]);
@@ -29,16 +38,15 @@ function MatchColumnBoard({
       onChange(nextLinks);
       return;
     }
-
     setDraftLinks(nextLinks);
   };
 
   const connectPair = (leftId, rightId) => {
     const nextLinks = { ...links };
 
-    Object.entries(nextLinks).forEach(([currentLeftId, currentRightId]) => {
-      if (currentRightId === rightId && currentLeftId !== leftId) {
-        delete nextLinks[currentLeftId];
+    Object.entries(nextLinks).forEach(([lId, rId]) => {
+      if (rId === rightId && lId !== leftId) {
+        delete nextLinks[lId];
       }
     });
 
@@ -48,16 +56,13 @@ function MatchColumnBoard({
     setDraggingLeftId(null);
   };
 
-  const handleLeftClick = (itemId) => {
-    setSelectedLeft((current) => (current === itemId ? null : itemId));
+  const handleLeftClick = (id) => {
+    setSelectedLeft((curr) => (curr === id ? null : id));
   };
 
-  const handleRightClick = (itemId) => {
-    if (!selectedLeft) {
-      return;
-    }
-
-    connectPair(selectedLeft, itemId);
+  const handleRightClick = (id) => {
+    if (!selectedLeft) return;
+    connectPair(selectedLeft, id);
   };
 
   const clearPair = (leftId) => {
@@ -71,10 +76,13 @@ function MatchColumnBoard({
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
         <h3 className="text-2xl font-black text-ink">{title}</h3>
         <p className="rounded-full bg-white/85 px-4 py-2 text-sm font-bold text-slate-600">
-          Left: word, Right: image/symbol
+          Left: UPPERCASE, Right: lowercase
         </p>
       </div>
+
       <div className="grid gap-4 lg:grid-cols-2">
+
+        {/* LEFT SIDE */}
         <div className="space-y-3">
           {leftItems.map((item, index) => {
             const connectedRight = rightById[links[item.id]];
@@ -90,95 +98,91 @@ function MatchColumnBoard({
                     : 'border-white/90 bg-white hover:border-fuchsia-200'
                 ].join(' ')}
                 draggable
-                onDragEnd={() => setDraggingLeftId(null)}
-                onDragStart={(event) => {
-                  event.dataTransfer.setData('text/plain', item.id);
-                  event.dataTransfer.effectAllowed = 'move';
+                onDragStart={(e) => {
+                  e.dataTransfer.setData('text/plain', item.id);
                   setDraggingLeftId(item.id);
                 }}
+                onDragEnd={() => setDraggingLeftId(null)}
               >
                 <button
                   className="flex w-full items-center gap-4 text-left"
                   onClick={() => handleLeftClick(item.id)}
                   type="button"
                 >
-                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-fuchsia-500 text-lg font-black text-white">
+                  <span className="flex h-12 w-12 items-center justify-center rounded-full bg-fuchsia-500 text-white font-black">
                     {index + 1}
                   </span>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-xl font-black text-ink"><LetterPronounceText text={item.label} /></p>
-                    <p className="text-sm font-bold text-slate-500">
+
+                  <div className="flex-1">
+                    {/* ✅ UPPERCASE */}
+                    <p className="text-xl font-black text-ink">
+                      <LetterPronounceText text={item.label} />
+                    </p>
+                    <p className="text-sm text-slate-500">
                       {connectedRight ? 'Matched' : 'Drag to match'}
                     </p>
                   </div>
                 </button>
-                {connectedRight ? (
+
+                {connectedRight && (
                   <button
-                    className="mt-3 rounded-full bg-white px-4 py-2 text-sm font-black text-fuchsia-700 shadow-sm"
+                    className="mt-3 rounded-full bg-white px-4 py-2 text-sm font-black text-fuchsia-700"
                     onClick={() => clearPair(item.id)}
-                    type="button"
                   >
                     Clear match
                   </button>
-                ) : null}
+                )}
               </div>
             );
           })}
         </div>
 
+        {/* RIGHT SIDE */}
         <div className="space-y-3">
-          {rightItems.map((item, index) => {
+          {transformedRightItems.map((item, index) => {
             const isLinked = linkedRightIds.has(item.id);
-            const matchingLeft = leftItems.find((leftItem) => links[leftItem.id] === item.id);
+            const matchingLeft = leftItems.find(l => links[l.id] === item.id);
 
             return (
               <button
                 key={item.id}
                 className={[
-                  'flex w-full items-center gap-4 rounded-[1.75rem] border-4 px-4 py-4 text-left shadow-sm transition',
+                  'flex w-full items-center gap-4 rounded-[1.75rem] border-4 px-4 py-4 text-left transition',
                   isLinked
                     ? 'border-sky-300 bg-sky-100'
                     : 'border-white/90 bg-white hover:border-sky-200'
                 ].join(' ')}
                 onClick={() => handleRightClick(item.id)}
-                onDragOver={(event) => {
-                  event.preventDefault();
-                  event.dataTransfer.dropEffect = 'move';
-                }}
-                onDrop={(event) => {
-                  event.preventDefault();
-                  const leftId = event.dataTransfer.getData('text/plain') || draggingLeftId;
-
-                  if (leftId) {
-                    connectPair(leftId, item.id);
-                  }
+                onDragOver={(e) => e.preventDefault()}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  const leftId = e.dataTransfer.getData('text/plain') || draggingLeftId;
+                  if (leftId) connectPair(leftId, item.id);
                 }}
                 type="button"
               >
-                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-sky-500 text-lg font-black text-white">
+                <span className="flex h-12 w-12 items-center justify-center rounded-full bg-sky-500 text-white font-black">
                   {String.fromCharCode(65 + index)}
                 </span>
-                <div className="min-w-0">
-                  {item.imageUrl ? (
-                    <img
-                      alt={item.label || 'Match option'}
-                      className="h-16 w-16 rounded-xl object-cover"
-                      src={item.imageUrl}
-                    />
-                  ) : (
-                    <p className="text-xl font-black text-ink"><LetterPronounceText text={item.label} /></p>
-                  )}
-                  <p className="text-sm font-bold text-slate-500">
-                    {matchingLeft ? `Dropped: ${matchingLeft.label}` : 'Drop a left card here'}
+
+                <div>
+                  {/* ✅ LOWERCASE */}
+                  <p className="text-xl font-black text-ink lowercase">
+                    <LetterPronounceText text={item.label} />
+                  </p>
+                  <p className="text-sm text-slate-500">
+                    {matchingLeft ? `Matched: ${matchingLeft.label}` : 'Drop here'}
                   </p>
                 </div>
               </button>
             );
           })}
         </div>
+
       </div>
     </div>
   );
 }
 
 export default MatchColumnBoard;
+

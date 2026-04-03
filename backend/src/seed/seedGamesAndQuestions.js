@@ -1,219 +1,280 @@
+
 import mongoose from 'mongoose';
 import connectDB from '../config/db.js';
 import Game from '../models/Game.js';
 import Pronunciation from '../models/Pronunciation.js';
 import Question from '../models/Question.js';
 
+const BASE_URL = 'http://localhost:5000/public';
+
 const GAME_DEFINITIONS = [
+
+  
   {
     gameName: 'Letter Recognition',
     gameType: 'letter_recognition',
-    type: 'letter_recognition',
-    difficulty: 'beginner',
     level: 1,
     order: 1,
-    description: 'Identify the requested letter quickly.',
     questions: [
-      {
-        questionType: 'letter_select',
-        questionText: 'Select the letter A.',
-        options: ['A', 'B', 'D', 'E'],
-        correctAnswer: 'A'
-      }
+      { questionText: 'Select letter A', options: ['A', 'B', 'C', 'D'], correctAnswer: 'A' },
+      { questionText: 'Select letter B', options: ['A', 'B', 'D', 'E'], correctAnswer: 'B' },
+      { questionText: 'Select letter C', options: ['C', 'A', 'F', 'G'], correctAnswer: 'C' },
+      { questionText: 'Select letter D', options: ['A', 'D', 'H', 'I'], correctAnswer: 'D' },
+      { questionText: 'Select letter E', options: ['E', 'F', 'G', 'H'], correctAnswer: 'E' }
     ]
   },
+
+  // ✅ ALPHABET MATCHING
   {
     gameName: 'Alphabet Matching',
     gameType: 'alphabet_matching',
-    type: 'alphabet_matching',
-    difficulty: 'beginner',
     level: 1,
     order: 2,
-    description: 'Match letters to their lowercase forms.',
     questions: [
-      {
-        questionType: 'match_pairs',
-        questionText: 'Match uppercase with lowercase letters.',
-        options: [
-          { left: 'A', right: 'a' },
-          { left: 'B', right: 'b' }
-        ],
-        correctAnswer: ['A-a', 'B-b']
-      }
+      { questionText: 'Match A-a', options: [{ left: 'A', right: 'a' }], correctAnswer: ['A-a'] },
+      { questionText: 'Match B-b', options: [{ left: 'B', right: 'b' }], correctAnswer: ['B-b'] },
+      { questionText: 'Match C-c', options: [{ left: 'C', right: 'c' }], correctAnswer: ['C-c'] },
+      { questionText: 'Match D-d', options: [{ left: 'D', right: 'd' }], correctAnswer: ['D-d'] },
+      { questionText: 'Match E-e', options: [{ left: 'E', right: 'e' }], correctAnswer: ['E-e'] }
     ]
   },
+
+  // ✅ SOUND IDENTIFICATION
   {
     gameName: 'Sound Identification',
     gameType: 'sound_identification',
-    type: 'sound_identification',
-    difficulty: 'beginner',
     level: 1,
     order: 3,
-    description: 'Pick the letter that matches the played sound.',
     questions: [
-      {
-        questionType: 'audio_choice',
-        questionText: 'Which letter makes this sound?',
-        audioUrl: 'https://example.com/audio/letters/b.mp3',
-        options: ['B', 'P', 'D'],
-        correctAnswer: 'B'
-      }
+      { questionText: 'Which letter sound?', audioUrl: `${BASE_URL}/audio/a.mp3`, options: ['A', 'B', 'C'], correctAnswer: 'A' },
+      { questionText: 'Which letter sound?', audioUrl: `${BASE_URL}/audio/b.mp3`, options: ['B', 'D', 'E'], correctAnswer: 'B' },
+      { questionText: 'Which letter sound?', audioUrl: `${BASE_URL}/audio/c.mp3`, options: ['C', 'F', 'G'], correctAnswer: 'C' },
+      { questionText: 'Which letter sound?', audioUrl: `${BASE_URL}/audio/d.mp3`, options: ['D', 'H', 'I'], correctAnswer: 'D' },
+      { questionText: 'Which letter sound?', audioUrl: `${BASE_URL}/audio/e.mp3`, options: ['E', 'J', 'K'], correctAnswer: 'E' }
     ]
   },
+
+  // ✅ PICTURE MCQ
   {
-    gameName: 'Picture Based MCQ',
+    gameName: 'Picture MCQ',
     gameType: 'picture_mcq',
-    type: 'picture_mcq',
-    difficulty: 'intermediate',
     level: 2,
     order: 1,
-    description: 'A picture is shown and the student picks the correct word from multiple options.',
     questions: [
       {
-        questionType: 'picture_mcq',
-        questionText: 'Choose the correct word for the picture shown.',
-        imageUrl: 'https://example.com/images/elephant.png',
-        options: ['elephant', 'tiger', 'lion', 'zebra'],
+        questionText: 'Identify the animal',
+        imageUrl: 'https://images.pexels.com/photos/133394/pexels-photo-133394.jpeg?cs=srgb&dl=pexels-inspiredimages-133394.jpg&fm=jpg',
+        options: ['elephant', 'lion', 'tiger', 'dog'],
         correctAnswer: 'elephant',
-        audioUrl: 'https://example.com/audio/words/elephant.mp3'
+        audioUrl: `${BASE_URL}/audio/elephant.mp3`
+      },
+      {
+        questionText: 'Identify the bird',
+        imageUrl: 'https://cdn.pixabay.com/photo/2025/05/04/18/04/robin-9578746_1280.jpg',
+        options: ['bird', 'cat', 'fish', 'cow'],
+        correctAnswer: 'bird',
+        audioUrl: `${BASE_URL}/audio/bird.mp3`
+      },
+      {
+        questionText: 'Identify the fruit',
+        imageUrl: 'https://img.lb.wbmdstatic.com/vim/live/webmd/consumer_assets/site_images/articles/health_tools/healing_foods_slideshow/1800ss_getty_rf_apples.jpg?resize=750px:*&output-quality=75',
+        options: ['apple', 'banana', 'mango', 'orange'],
+        correctAnswer: 'apple',
+        audioUrl: `${BASE_URL}/audio/apple.mp3`
+      },
+      {
+        questionText: 'Identify the animal',
+        imageUrl: 'https://img.freepik.com/free-photo/little-cat-sitting-grass_1150-17019.jpg?semt=ais_incoming&w=740&q=80',
+        options: ['cat', 'dog', 'lion', 'tiger'],
+        correctAnswer: 'cat',
+        audioUrl: `${BASE_URL}/audio/cat.mp3`
+      },
+      {
+        questionText: 'Identify the animal',
+        imageUrl: 'https://cdn.pixabay.com/photo/2017/09/25/13/12/dog-2785074_1280.jpg',
+        options: ['dog', 'wolf', 'fox', 'lion'],
+        correctAnswer: 'dog',
+        audioUrl: `${BASE_URL}/audio/dog.mp3`
       }
     ]
   },
+
+  // ✅ WORD BUILDER
   {
     gameName: 'Word Builder',
-    gameType: 'jumbled_letters',
-    type: 'word_builder',
-    difficulty: 'intermediate',
+    gameType: 'word_builder',
     level: 2,
     order: 2,
-    description: 'Students arrange scrambled letters to form a meaningful word.',
     questions: [
       {
-        questionType: 'word_builder',
-        questionText: 'Arrange letters to form the word for a flying bird: B, I, R, D',
-        imageUrl: 'https://example.com/images/bird.png',
-        options: ['B', 'I', 'R', 'D'],
+        questionText: 'Arrange letters',
+        options: ['R', 'B', 'I', 'D'],
         correctAnswer: 'BIRD',
-        audioUrl: 'https://example.com/audio/words/bird.mp3'
+        audioUrl: `${BASE_URL}/audio/bird.mp3`
+      },
+      {
+        questionText: 'Arrange letters',
+        options: ['T', 'C', 'A'],
+        correctAnswer: 'CAT',
+        audioUrl: `${BASE_URL}/audio/cat.mp3`
+      },
+      {
+        questionText: 'Arrange letters',
+        options: ['G', 'D', 'O'],
+        correctAnswer: 'DOG',
+        audioUrl: `${BASE_URL}/audio/dog.mp3`
+      },
+      {
+        questionText: 'Arrange letters',
+        options: ['P', 'A', 'L', 'E', 'P'],
+        correctAnswer: 'APPLE',
+        audioUrl: `${BASE_URL}/audio/apple.mp3`
+      },
+      {
+        questionText: 'Arrange letters',
+        options: ['H', 'E', 'T', 'A', 'N', 'P', 'L', 'E'],
+        correctAnswer: 'ELEPHANT',
+        audioUrl: `${BASE_URL}/audio/elephant.mp3`
       }
     ]
   },
+
   {
-    gameName: 'Match the Column',
+    gameName: 'Match Column',
     gameType: 'match_column',
-    type: 'match_column',
-    difficulty: 'intermediate',
     level: 2,
     order: 3,
-    description: 'Students match image cards with their correct words.',
     questions: [
+
       {
-        questionType: 'match_column',
-        questionText: 'Match each image with the right word.',
-        imageUrl: 'https://example.com/images/match-set-1.png',
-        options: ['apple', 'ball', 'cat', 'dog'],
-        correctAnswer: 'apple'
+        questionText: 'Match uppercase words with lowercase words',
+        options: [
+          { text: 'APPLE' },
+          { text: 'CAT' },
+          { text: 'DOG' },
+          { text: 'BIRD' }
+        ],
+        correctAnswer: ['apple', 'cat', 'dog', 'bird']
+      },
+
+      {
+        questionText: 'Match uppercase animal names with lowercase',
+        options: [
+          { text: 'ELEPHANT' },
+          { text: 'LION' },
+          { text: 'TIGER' },
+          { text: 'GOAT' }
+        ],
+        correctAnswer: ['elephant', 'lion', 'tiger', 'goat']
+      },
+
+      {
+        questionText: 'Match uppercase fruit names with lowercase',
+        options: [
+          { text: 'APPLE' },
+          { text: 'BANANA' },
+          { text: 'ORANGE' },
+          { text: 'GRAPES' }
+        ],
+        correctAnswer: ['apple', 'banana', 'orange', 'grapes']
+      },
+
+      {
+        questionText: 'Match uppercase object names with lowercase',
+        options: [
+          { text: 'BALL' },
+          { text: 'BOOK' },
+          { text: 'TABLE' },
+          { text: 'CHAIR' }
+        ],
+        correctAnswer: ['ball', 'book', 'table', 'chair']
+      },
+
+      {
+        questionText: 'Match uppercase food items with lowercase',
+        options: [
+          { text: 'MILK' },
+          { text: 'BREAD' },
+          { text: 'RICE' },
+          { text: 'CAKE' }
+        ],
+        correctAnswer: ['milk', 'bread', 'rice', 'cake']
       }
+
     ]
   },
+
+
+
+  // ✅ SENTENCE FORMATION
   {
     gameName: 'Sentence Formation',
     gameType: 'sentence_formation',
-    type: 'sentence_formation',
-    difficulty: 'advanced',
     level: 3,
     order: 1,
-    description: 'Arrange given words to form a complete sentence.',
     questions: [
-      {
-        questionType: 'sentence_reorder',
-        questionText: 'Rearrange words to form a correct sentence.',
-        options: ['I', 'school', 'go', 'to'],
-        correctAnswer: 'I go to school'
-      }
+      { questionText: 'Rearrange words', options: ['I', 'go', 'to', 'school'], correctAnswer: 'I go to school' },
+      { questionText: 'Rearrange words', options: ['She', 'is', 'happy'], correctAnswer: 'She is happy' },
+      { questionText: 'Rearrange words', options: ['We', 'play', 'games'], correctAnswer: 'We play games' },
+      { questionText: 'Rearrange words', options: ['He', 'likes', 'apples'], correctAnswer: 'He likes apples' },
+      { questionText: 'Rearrange words', options: ['They', 'are', 'friends'], correctAnswer: 'They are friends' }
     ]
   },
+
+  // ✅ FILL BLANK
   {
-    gameName: 'Fill in the Blanks',
+    gameName: 'Fill Blanks',
     gameType: 'fill_in_the_blanks',
-    type: 'fill_in_the_blanks',
-    difficulty: 'advanced',
     level: 3,
     order: 2,
-    description: 'Complete the sentence with the correct word.',
     questions: [
-      {
-        questionType: 'fill_blank',
-        questionText: 'The sun ____ in the east.',
-        options: ['rise', 'rises', 'rising'],
-        correctAnswer: 'rises',
-        acceptedAnswers: ['rises']
-      }
+      { questionText: 'The sun ___ in east', options: ['rise', 'rises'], correctAnswer: 'rises' },
+      { questionText: 'I ___ a book', options: ['read', 'reads'], correctAnswer: 'read' },
+      { questionText: 'She ___ happy', options: ['is', 'are'], correctAnswer: 'is' },
+      { questionText: 'They ___ playing', options: ['is', 'are'], correctAnswer: 'are' },
+      { questionText: 'We ___  to school', options: ['go', 'goes'], correctAnswer: 'go' }
     ]
   },
+
+  // ✅ SPELLING
   {
     gameName: 'Spelling Correction',
     gameType: 'spelling_correction',
-    type: 'spelling_correction',
-    difficulty: 'advanced',
     level: 3,
     order: 3,
-    description: 'Find and correct misspelled words.',
     questions: [
-      {
-        questionType: 'spelling_correction',
-        questionText: 'Correct this word: BANANNA',
-        options: [],
-        correctAnswer: 'BANANA',
-        acceptedAnswers: ['banana', 'BANANA']
-      }
+      { questionText: 'Correct BANANNA', correctAnswer: 'BANANA' },
+      { questionText: 'Correct APLE', correctAnswer: 'APPLE' },
+      { questionText: 'Correct DOOG', correctAnswer: 'DOG' },
+      { questionText: 'Correct BIRDD', correctAnswer: 'BIRD' },
+      { questionText: 'Correct ELEPHENT', correctAnswer: 'ELEPHANT' }
     ]
   }
+
 ];
 
-const LETTER_PRONUNCIATIONS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map((letter) => ({
-  letter,
-  audioUrl: `https://example.com/audio/letters/${letter.toLowerCase()}.mp3`
-}));
-
 const seed = async () => {
-  try {
-    await connectDB();
+  await connectDB();
 
-    for (const definition of GAME_DEFINITIONS) {
-      const { questions, ...gamePayload } = definition;
+  for (const def of GAME_DEFINITIONS) {
+    const { questions, ...gameData } = def;
 
-      const game = await Game.findOneAndUpdate(
-        { level: gamePayload.level, order: gamePayload.order },
-        gamePayload,
-        { upsert: true, new: true, setDefaultsOnInsert: true }
-      );
+    const game = await Game.findOneAndUpdate(
+      { level: def.level, order: def.order },
+      gameData,
+      { upsert: true, new: true }
+    );
 
-      await Question.deleteMany({ gameId: game._id });
+    await Question.deleteMany({ gameId: game._id });
 
-      const questionDocs = questions.map((question) => ({
-        ...question,
-        gameId: game._id
-      }));
-
-      await Question.insertMany(questionDocs);
-    }
-
-    for (const pronunciation of LETTER_PRONUNCIATIONS) {
-      await Pronunciation.findOneAndUpdate(
-        { letter: pronunciation.letter },
-        pronunciation,
-        { upsert: true, new: true, setDefaultsOnInsert: true }
-      );
-    }
-
-    console.log('Seed completed: games, questions, and pronunciations are ready.');
-  } catch (error) {
-    console.error('Seed failed:', error.message);
-    process.exitCode = 1;
-  } finally {
-    await mongoose.connection.close();
+    await Question.insertMany(
+      questions.map(q => ({ ...q, gameId: game._id }))
+    );
   }
+
+  console.log('✅ SEED SUCCESS');
+  mongoose.connection.close();
 };
 
 seed();
+

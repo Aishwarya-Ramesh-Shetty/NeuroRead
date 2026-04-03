@@ -13,7 +13,7 @@ app.use(
   })
 );
 app.use(express.json({ limit: '1mb' }));
-
+app.use('/public', express.static('public'));
 app.get('/health', (req, res) => {
   res.status(200).json({ success: true, message: 'Server healthy' });
 });

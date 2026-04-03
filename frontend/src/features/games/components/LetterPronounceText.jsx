@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { usePronunciation } from '../hooks/usePronunciation.js';
 
@@ -7,18 +8,16 @@ function LetterPronounceText({ text, className = '', stopPropagation = true }) {
 
   const handleLetterClick = async (event, letter) => {
     if (stopPropagation) {
-      event.stopPropagation();
+      event.stopPropagation(); // ✅ prevents parent button click
     }
 
-    if (!/[a-z]/i.test(letter)) {
-      return;
-    }
+    if (!/[a-z]/i.test(letter)) return;
 
     try {
       setLoadingLetter(letter);
       await playLetter(letter);
     } catch {
-      // Ignore pronunciation failures and keep game interaction responsive.
+      // ignore errors
     } finally {
       setLoadingLetter('');
     }
@@ -27,18 +26,19 @@ function LetterPronounceText({ text, className = '', stopPropagation = true }) {
   return (
     <span className={className}>
       {String(text).split('').map((char, index) => (
-        <button
+        <span
           key={`${char}-${index}`}
-          className="inline rounded px-0.5 transition hover:bg-slate-200/70"
-          disabled={loadingLetter === char}
+          className={`inline px-0.5 rounded cursor-pointer transition hover:bg-slate-200/70 ${
+            loadingLetter === char ? 'opacity-50 cursor-not-allowed' : ''
+          }`}
           onClick={(event) => handleLetterClick(event, char)}
-          type="button"
         >
           {char}
-        </button>
+        </span>
       ))}
     </span>
   );
 }
 
 export default LetterPronounceText;
+
