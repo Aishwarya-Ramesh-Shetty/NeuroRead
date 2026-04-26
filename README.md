@@ -1,40 +1,89 @@
-# Dyslexia Learning Platform (MVP)
+# Dyslexia Learning Platform
 
-This repository contains the MVP foundation for a Dyslexia Learning Platform.
+A full-stack MERN application designed to support children with Dyslexia through interactive and gamified learning. The platform helps students improve reading, spelling, pronunciation, and word recognition using educational games, personalized learning paths, and progress tracking.
 
-## Current Scope
+---
 
-- Backend: Implemented (Node.js + Express + MongoDB)
-- Frontend: Professional folder structure only (no UI code yet)
+## Features
 
-## Documentation
+### Authentication
+- Secure student registration and login using JWT
+- Protected routes for authorized access
 
-- Run/Install Guide: [`docs/SETUP_AND_RUN_GUIDE.md`](docs/SETUP_AND_RUN_GUIDE.md)
-- Architecture Overview (detailed): [`docs/PROJECT_ARCHITECTURE.md`](docs/PROJECT_ARCHITECTURE.md)
-- Architecture Diagram (Mermaid): [`docs/PROJECT_ARCHITECTURE.mmd`](docs/PROJECT_ARCHITECTURE.mmd)
+### Educational Games
+- Letter Recognition
+- Alphabet Matching
+- Picture Based MCQ
+- Match the Column
+- Word Builder
+- Jumbled Words
+- Sound Identification
+- Sentence Formation
+- Fill in the Blanks
+- Spelling Correction
 
-## Quick Start
+### Pronunciation System
+- Click on individual letters to hear pronunciation
+- Full word pronunciation support using audio playback
+
+### Personalized Learning
+- Level-based game unlocking system
+- Students must complete one level before moving to the next
+
+### Progress Tracking
+- Tracks attempts, scores, time taken, and completed levels
+- Dashboard for monitoring student performance
+
+---
+
+## Tech Stack
+
+### Frontend
+- React.js (Vite)
+- Tailwind CSS
+- React Router
+- Context API
+
+### Backend
+- Node.js
+- Express.js
+
+### Database
+- MongoDB
+- Mongoose ODM
+
+### Authentication
+- JWT (JSON Web Token)
+- bcrypt password hashing
+
+---
+
+## Project Structure
 
 ```bash
-cd backend
-cp .env.example .env
-npm install
-npm run seed
-npm run dev
-```
-
-Health check:
-
-```bash
-curl http://localhost:5000/health
-```
-
-
-## Content model clarification
-
-For the current MVP, games/questions are predefined backend content (not student-created). Seed default game content with:
-
-```bash
-cd backend
-npm run seed
-```
+Dyslexia-Learning-Platform/
+│
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── context/
+│   │   ├── hooks/
+│   │   ├── services/
+│   │   ├── routes/
+│   │   └── assets/
+│
+├── backend/
+│   ├── src/
+│   │   ├── config/
+│   │   ├── controllers/
+│   │   ├── middlewares/
+│   │   ├── models/
+│   │   ├── routes/
+│   │   ├── services/
+│   │   └── utils/
+│   │
+│   ├── app.js
+│   └── server.js
+│
+└── README.md
