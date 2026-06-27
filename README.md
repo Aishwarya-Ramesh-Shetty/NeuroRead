@@ -1,77 +1,112 @@
-# Dyslexia Learning Platform
+# 🧠 NeuroRead - Dyslexia Learning Platform
 
-A full-stack MERN application designed to support children with Dyslexia through interactive and gamified learning. The platform helps students improve reading, spelling, pronunciation, and word recognition using educational games, personalized learning paths, and progress tracking.
+> An interactive MERN stack web application that empowers children with dyslexia through gamified learning, personalized learning paths, and pronunciation-assisted educational activities.
 
----
-
-## Features
-
-### Authentication
-- Secure student registration and login using JWT
-- Protected routes for authorized access
-
-### Educational Games
-- Letter Recognition
-- Alphabet Matching
-- Picture Based MCQ
-- Match the Column
-- Word Builder
-- Jumbled Words
-- Sound Identification
-- Sentence Formation
-- Fill in the Blanks
-- Spelling Correction
-
-### Pronunciation System
-- Click on individual letters to hear pronunciation
-- Full word pronunciation support using audio playback
-
-### Personalized Learning
-- Level-based game unlocking system
-- Students must complete one level before moving to the next
-
-### Progress Tracking
-- Tracks attempts, scores, time taken, and completed levels
-- Dashboard for monitoring student performance
+![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge\&logo=react)
+![Node.js](https://img.shields.io/badge/Node.js-Express-339933?style=for-the-badge\&logo=node.js)
+![MongoDB](https://img.shields.io/badge/MongoDB-Database-47A248?style=for-the-badge\&logo=mongodb)
+![JWT](https://img.shields.io/badge/Auth-JWT-orange?style=for-the-badge)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge\&logo=tailwind-css)
 
 ---
 
-## Tech Stack
+## 🌐 Live Demo
+
+**Frontend:** https://neuro-read-frontend.vercel.app
+
+> *(Add your Render backend URL here once deployed.)*
+
+---
+
+## 📖 Overview
+
+NeuroRead is a web-based learning platform specially designed to support children with dyslexia. It combines educational games, personalized learning, pronunciation support, and progress tracking to create an engaging and accessible learning experience.
+
+The platform enables students to improve reading, spelling, vocabulary, and pronunciation through interactive activities while allowing them to progress at their own pace.
+
+---
+
+## ✨ Features
+
+### 🔐 Authentication
+
+* Secure student registration and login
+* JWT-based authentication
+* Protected routes
+
+### 🎮 Educational Games
+
+* Letter Recognition
+* Alphabet Matching
+* Picture Based MCQ
+* Match the Column
+* Word Builder
+* Jumbled Words
+* Sound Identification
+* Sentence Formation
+* Fill in the Blanks
+* Spelling Correction
+
+### 🔊 Pronunciation Assistance
+
+* Click any letter to hear its pronunciation
+* Word pronunciation support using audio
+* Audio-assisted learning for better retention
+
+### 📚 Personalized Learning
+
+* Level-based learning path
+* Sequential game unlocking
+* Structured progression from beginner to advanced
+
+### 📊 Progress Tracking
+
+* Track completed games
+* Monitor scores and attempts
+* View learning progress dashboard
+
+---
+
+## 🏗️ Tech Stack
 
 ### Frontend
-- React.js (Vite)
-- Tailwind CSS
-- React Router
-- Context API
+
+* React (Vite)
+* Tailwind CSS
+* React Router
+* Context API
 
 ### Backend
-- Node.js
-- Express.js
+
+* Node.js
+* Express.js
+* REST APIs
 
 ### Database
-- MongoDB
-- Mongoose ODM
+
+* MongoDB
+* Mongoose ODM
 
 ### Authentication
-- JWT (JSON Web Token)
-- bcrypt password hashing
+
+* JWT
+* bcrypt
 
 ---
 
-## Project Structure
+## 📂 Project Structure
 
-```bash
-Dyslexia-Learning-Platform/
-│
+```text
+NeuroRead/
 ├── frontend/
 │   ├── src/
+│   │   ├── assets/
 │   │   ├── components/
-│   │   ├── pages/
 │   │   ├── context/
 │   │   ├── hooks/
-│   │   ├── services/
+│   │   ├── pages/
 │   │   ├── routes/
-│   │   └── assets/
+│   │   └── services/
 │
 ├── backend/
 │   ├── src/
@@ -82,8 +117,78 @@ Dyslexia-Learning-Platform/
 │   │   ├── routes/
 │   │   ├── services/
 │   │   └── utils/
-│   │
-│   ├── app.js
 │   └── server.js
-│
-└── README.md
+```
+
+---
+
+## 🗄️ Database Design
+
+The application uses MongoDB with the following collections:
+
+* Users
+* Games
+* Questions
+* Attempts
+* User Progress
+* Pronunciations
+
+---
+
+## 🔄 Application Workflow
+
+1. Student registers or logs in.
+2. JWT is generated and stored for authenticated access.
+3. Students can explore games from the Dashboard or follow the Personalized Learning path.
+4. Each game fetches questions dynamically from the backend.
+5. Clicking on letters or words plays pronunciation audio.
+6. Game attempts are stored in MongoDB.
+7. Progress is updated after every completed game.
+8. Dashboard displays scores, attempts, and completed levels.
+
+---
+
+## 🚀 Running Locally
+
+### Clone the repository
+
+```bash
+git clone <repository-url>
+cd NeuroRead
+```
+
+### Backend
+
+```bash
+cd backend
+npm install
+npm run dev
+```
+
+### Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+---
+
+## 🔮 Future Enhancements
+
+* AI-powered adaptive learning
+* Speech recognition
+* Teacher dashboard
+* Parent portal
+* Achievement badges and streaks
+* Multi-language support
+* Mobile application
+
+---
+
+## 👩‍💻 Author
+
+**Aishwarya Shetty**
+
+If you found this project useful, consider giving it a ⭐ on GitHub!
