@@ -75,12 +75,16 @@ The platform enables students to improve reading, spelling, vocabulary, and pron
 * Tailwind CSS
 * React Router
 * Context API
+* Axios
 
 ### Backend
 
 * Node.js
 * Express.js
 * REST APIs
+* CORS
+* Google TTS
+* Nodemon
 
 ### Database
 
